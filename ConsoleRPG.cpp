@@ -1,6 +1,86 @@
 #include <iostream>
 #include <random>
 
+int Goblin(int& health, int& attack, int& potions, int& balance);
+int Orc(int& health, int& attack, int& potions, int& balance);
+int Dragon(int& health, int& attack, int& potions, int& balance);
+int shop(int& balance, int& potions);
+
+int main() {
+    srand(time(NULL));
+
+    std::cout << "Enter the hero's name: ";
+    std::string heroName;
+    std::cin >> heroName;
+
+    std::cout << "Choose a class >\n"
+              << " 1 - Warrior\n ===== Stats =====\n |--> Health: 150\n |--> Attack: 20\n |--> Warm United: 0.8x\n " << std::endl
+              << " 2 - Mage\n ===== Stats =====\n |--> Health: 100\n |--> Attack: 35\n |--> Warm United: 0.5x\n " << std::endl
+              << " 3 - Archer\n ===== Stats =====\n |--> Health: 120\n |--> Attack: 25\n |--> Warm United: 0.65x\n" << std::endl;
+    int classChoice;
+    std::cin >> classChoice;
+
+    double warmUnited = 0;
+    int health, attack;
+    switch (classChoice) {
+        case 1:
+            health = 150;
+            attack = 20;
+            warmUnited = 0.8;
+            break;
+        case 2:
+            health = 100;
+            attack = 35;
+            warmUnited = 0.5;
+            break;
+        case 3:
+            health = 120;
+            attack = 25;
+            warmUnited = 0.65;
+            break;
+        default:
+            std::cout << "Invalid class choice. Defaulting to Warrior." << std::endl;
+            health = 150;
+            attack = 20;
+            warmUnited = 0.8;
+            break;
+    }
+
+    int potions = 2;
+    int balance = 20;
+    bool heroIsAlive = true;
+    int locationChoice;
+
+    do {
+        std::cout << "Where do you want to go?\n 1 - Forest (Goblin)\n 2 - Cave (Orc)\n 3 - Mountain (Dragon)\n 4 - Shop\n 0 - Exit" << std::endl;
+        std::cin >> locationChoice;
+        switch (locationChoice) {
+            case 1:
+                Goblin(health, attack, potions, balance);
+                break;
+            case 2:
+                Orc(health, attack, potions, balance);
+                break;
+            case 3:
+                Dragon(health, attack, potions, balance);
+                break;
+            case 4:
+                shop(balance, potions);
+                break;
+            case 0:
+                std::cout << "You exit the game. Goodbye!" << std::endl;
+                heroIsAlive = false;
+                break;
+            default:
+                std::cout << "Invalid location choice. Defaulting to Shop." << std::endl;
+                shop(balance, potions);
+                break;
+        }
+    } while (heroIsAlive);
+
+    return 0;
+}
+
 int Goblin(int& health, int& attack, int& potions, int& balance) {
     std::cout << "A wild Goblin appears! (health: 50, attack: 10)\n" << std::endl;
 
@@ -188,72 +268,5 @@ int shop(int& balance, int& potions) {
             std::cout << "You exit the shop." << std::endl;
             break;
     }
-    return 0;
-}
-
-int main() {
-    srand(time(NULL));
-
-    std::cout << "Enter the hero's name: ";
-    std::string heroName;
-    std::cin >> heroName;
-
-    std::cout << "Choose a class >\n 1 - Warrior (health: 150, attack: 20)\n 2 - Mage (health: 100, attack: 35)\n 3 - Archer (health: 120, attack: 25)" << std::endl;
-    int classChoice;
-    std::cin >> classChoice;
-
-    int health, attack;
-    switch (classChoice) {
-        case 1:
-            health = 150;
-            attack = 20;
-            break;
-        case 2:
-            health = 100;
-            attack = 35;
-            break;
-        case 3:
-            health = 120;
-            attack = 25;
-            break;
-        default:
-            std::cout << "Invalid class choice. Defaulting to Warrior." << std::endl;
-            health = 150;
-            attack = 20;
-            break;
-    }
-
-    int potions = 2;
-    int balance = 20;
-    bool heroIsAlive = true;
-    int locationChoice;
-
-    do {
-        std::cout << "Where do you want to go?\n 1 - Forest (Goblin)\n 2 - Cave (Orc)\n 3 - Mountain (Dragon)\n 4 - Shop\n 0 - Exit" << std::endl;
-        std::cin >> locationChoice;
-        switch (locationChoice) {
-            case 1:
-                Goblin(health, attack, potions, balance);
-                break;
-            case 2:
-                Orc(health, attack, potions, balance);
-                break;
-            case 3:
-                Dragon(health, attack, potions, balance);
-                break;
-            case 4:
-                shop(balance, potions);
-                break;
-            case 0:
-                std::cout << "You exit the game. Goodbye!" << std::endl;
-                heroIsAlive = false;
-                break;
-            default:
-                std::cout << "Invalid location choice. Defaulting to Shop." << std::endl;
-                shop(balance, potions);
-                break;
-        }
-    } while (heroIsAlive);
-
     return 0;
 }
