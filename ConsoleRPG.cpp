@@ -1,48 +1,46 @@
 #include <iostream>
-#include <random>
 
-int Goblin(int& health, int& attack, int& potions, int& balance);
-int Orc(int& health, int& attack, int& potions, int& balance);
-int Dragon(int& health, int& attack, int& potions, int& balance);
+int Goblin(int& health, int& attack, int& potions, int& balance, double dmgMultiplier);
+int Orc(int& health, int& attack, int& potions, int& balance, double dmgMultiplier);
+int Dragon(int& health, int& attack, int& potions, int& balance, double dmgMultiplier);
 int shop(int& balance, int& potions);
 
 int main() {
-    srand(time(NULL));
 
     std::cout << "Enter the hero's name: ";
     std::string heroName;
     std::cin >> heroName;
 
     std::cout << "Choose a class >\n"
-              << " 1 - Warrior\n ===== Stats =====\n |--> Health: 150\n |--> Attack: 20\n |--> Warm United: 0.8x\n " << std::endl
-              << " 2 - Mage\n ===== Stats =====\n |--> Health: 100\n |--> Attack: 35\n |--> Warm United: 0.5x\n " << std::endl
-              << " 3 - Archer\n ===== Stats =====\n |--> Health: 120\n |--> Attack: 25\n |--> Warm United: 0.65x\n" << std::endl;
+              << " 1 - Warrior\n #===== Stats =====#\n |--> Health: 150\n |--> Attack: 20\n |--> DMG Multiplier: 0.8x\n " << std::endl
+              << " 2 - Mage\n #===== Stats =====#\n |--> Health: 100\n |--> Attack: 35\n |--> DMG Multiplier: 0.5x\n " << std::endl
+              << " 3 - Archer\n #===== Stats =====#\n |--> Health: 120\n |--> Attack: 25\n |--> DMG Multiplier: 0.65x\n" << std::endl;
     int classChoice;
     std::cin >> classChoice;
 
-    double warmUnited = 0;
+    double dmgMultiplier = 0;
     int health, attack;
     switch (classChoice) {
         case 1:
             health = 150;
             attack = 20;
-            warmUnited = 0.8;
+            dmgMultiplier = 0.8;
             break;
         case 2:
             health = 100;
             attack = 35;
-            warmUnited = 0.5;
+            dmgMultiplier = 0.5;
             break;
         case 3:
             health = 120;
             attack = 25;
-            warmUnited = 0.65;
+            dmgMultiplier = 0.65;
             break;
         default:
             std::cout << "Invalid class choice. Defaulting to Warrior." << std::endl;
             health = 150;
             attack = 20;
-            warmUnited = 0.8;
+            dmgMultiplier = 0.8;
             break;
     }
 
@@ -52,17 +50,22 @@ int main() {
     int locationChoice;
 
     do {
-        std::cout << "Where do you want to go?\n 1 - Forest (Goblin)\n 2 - Cave (Orc)\n 3 - Mountain (Dragon)\n 4 - Shop\n 0 - Exit" << std::endl;
+        std::cout << "Where do you want to go?\n "
+                  << "1 - Forest (Goblin)\n "
+                  << "2 - Cave (Orc)\n "
+                  << "3 - Mountain (Dragon)\n "
+                  << "4 - Shop\n "
+                  << "0 - Exit" << std::endl;
         std::cin >> locationChoice;
         switch (locationChoice) {
             case 1:
-                Goblin(health, attack, potions, balance);
+                Goblin(health, attack, potions, balance, dmgMultiplier);
                 break;
             case 2:
-                Orc(health, attack, potions, balance);
+                Orc(health, attack, potions, balance, dmgMultiplier);
                 break;
             case 3:
-                Dragon(health, attack, potions, balance);
+                Dragon(health, attack, potions, balance, dmgMultiplier);
                 break;
             case 4:
                 shop(balance, potions);
@@ -81,7 +84,7 @@ int main() {
     return 0;
 }
 
-int Goblin(int& health, int& attack, int& potions, int& balance) {
+int Goblin(int& health, int& attack, int& potions, int& balance, double dmgMultiplier) {
     std::cout << "A wild Goblin appears! (health: 50, attack: 10)\n" << std::endl;
 
     bool goblinIsAlive = true;
@@ -98,7 +101,7 @@ int Goblin(int& health, int& attack, int& potions, int& balance) {
                 if (goblinHealth > 0) {
                     std::cout << "Goblin's health: " << goblinHealth << std::endl;
                     std::cout << "The goblin attacked back!" << std::endl;
-                    health -= goblinAttack;
+                    health -= static_cast<double>(goblinAttack) * dmgMultiplier;
                     std::cout << "Your health: " << health << std::endl;
                     if (health <= 0) {
                         std::cout << "You were defeated by the Goblin!" << std::endl;
@@ -137,7 +140,7 @@ int Goblin(int& health, int& attack, int& potions, int& balance) {
     return 0;
 }
 
-int Orc(int& health, int& attack, int& potions, int& balance) {
+int Orc(int& health, int& attack, int& potions, int& balance, double dmgMultiplier) {
     std::cout << "A wild Orc appears! (health: 80, attack: 18)\n" << std::endl;
 
     bool orcIsAlive = true;
@@ -154,7 +157,7 @@ int Orc(int& health, int& attack, int& potions, int& balance) {
                 if (orcHealth > 0) {
                     std::cout << "Orc's health: " << orcHealth << std::endl;
                     std::cout << "The Orc attacked back!" << std::endl;
-                    health -= orcAttack;
+                    health -= static_cast<double>(orcAttack) * dmgMultiplier;
                     std::cout << "Your health: " << health << std::endl;
                     if (health <= 0) {
                         std::cout << "You were defeated by the Orc!" << std::endl;
@@ -193,7 +196,7 @@ int Orc(int& health, int& attack, int& potions, int& balance) {
     return 0;
 }
 
-int Dragon(int& health, int& attack, int& potions, int& balance) {
+int Dragon(int& health, int& attack, int& potions, int& balance, double dmgMultiplier) {
     std::cout << "A wild Dragon appears! (health: 150, attack: 30)\n" << std::endl;
 
     bool dragonIsAlive = true;
@@ -210,7 +213,7 @@ int Dragon(int& health, int& attack, int& potions, int& balance) {
                 if (dragonHealth > 0) {
                     std::cout << "Dragon's health: " << dragonHealth << std::endl;
                     std::cout << "The dragon attacked back!" << std::endl;
-                    health -= dragonAttack;
+                    health -= static_cast<double>(dragonAttack) * dmgMultiplier;
                     std::cout << "Your health: " << health << std::endl;
                     if (health <= 0) {
                         std::cout << "You were defeated by the Dragon!" << std::endl;
